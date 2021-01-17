@@ -2,17 +2,15 @@ import axios from 'axios';
 import {PreviousCoordinatesType} from '../Components/SendForm/SendForm';
 
 const yandexInstance = axios.create({
-  // withCredentials: true,
   baseURL: 'https://geocode-maps.yandex.ru/1.x/',
 });
-// https://geocode-maps.yandex.ru/1.x/?apikey=62863b39-ff46-4e0f-a09b-34ed4079f28a&geocode=30.483445405960065,50.41855269383524
+
 export const objectsYandexAPI = {
   geocodeNewObject(latitude: string, longitude: string) {
     return yandexInstance.get(`?geocode=${longitude},${latitude}`);
   },
 }
 
-// axios.defaults.params = {};
 export const setYandexInterceptors = (instance: any) => {
   instance.interceptors.request.use(
     async (config: any) => {
@@ -28,14 +26,19 @@ export const setYandexInterceptors = (instance: any) => {
 setYandexInterceptors(yandexInstance)
 
 const googleInstance = axios.create({
+
   // withCredentials: true,
-  baseURL: 'https://maps.googleapis.com/maps/api/distancematrix/',
+  // baseURL: 'https://maps.googleapis.com/maps/api/distancematrix/',
+  baseURL: 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/',
   headers: {
-    'Access-Control-Allow-Methods': "GET,PUT,POST,DELETE,OPTIONS",
-    'Access-Control-Allow-Origin': 'https://maps.googleapis.com/',
-    'Access-Control-Allow-Headers': "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,",
-    'Access-Control-Allow-Credentials': true,
-    'scheme': 'https'
+    'Access-Control-Allow-Origin': '*'
+
+    // 'Access-Control-Allow-Methods': "GET,PUT,POST,DELETE,OPTIONS",
+    // 'Access-Control-Allow-Origin': 'https://maps.googleapis.com/',
+    // 'Access-Control-Allow-Headers': "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,",
+    // 'Access-Control-Allow-Credentials': true,
+    // 'scheme': 'https',
+    // 'access-control-allow-origin': 'https://maps.googleapis.com/',
   },
 
 });
@@ -47,19 +50,4 @@ export const objectsGoogleAPI = {
     return googleInstance.get(`json?origins=${latitude},${longitude}&destinations=${previousCoordinates[0]},${previousCoordinates[1]}&key=AIzaSyDZYmugNtrfSskRFo0Wa3QYPRva1AeiuwU`);
   }
 }
-
-// export const setGoogleInterceptors = (instance: any) => {
-//   instance.interceptors.request.use(
-//     async (config: any) => {
-//       const apiKey = 'AIzaSyDZYmugNtrfSskRFo0Wa3QYPRva1AeiuwU'
-//       // const format = 'json'
-//       // config.params = {...config.params, apikey: apiKey, format: format}
-//       config.params = {...config.params, key: apiKey}
-//       return config;
-//     },
-//     (error: any) => Promise.reject(error)
-//   );
-// }
-//
-// setGoogleInterceptors(googleInstance)
 

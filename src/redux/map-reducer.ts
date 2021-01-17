@@ -46,11 +46,14 @@ type DispatchType = Dispatch<ActionType>;
 export const geocodeNewObject = (newObject: DisplayObjectType, previousCoordinates: PreviousCoordinatesType) => {
   return async (dispatch: DispatchType) => {
     const geocodeData = await objectsYandexAPI.geocodeNewObject(newObject.latitude, newObject.longitude);
-    // console.log('mapReducer::: geocodeData :', geocodeData.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted)
-    newObject.address = geocodeData.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted
-    dispatch(actions.addObject(newObject));
+    newObject.address = geocodeData.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted;
+
     const distanceData = await objectsGoogleAPI.getDistance(newObject.latitude, newObject.longitude, previousCoordinates);
-    console.log('mapReducer::: distanceData :', distanceData)
-    debugger
+
+    const distance = distanceData?.data?.rows[0]?.elements[0]?.distance?.text;
+    if (distance) {
+      newObject.lastPointDistance = distance;
+    }
+    dispatch(actions.addObject(newObject));
   }
 }

@@ -6,28 +6,37 @@ type PopoverMessagePropsType = {
 }
 
 export const PopoverMessage = ({address}: PopoverMessagePropsType) => {
- let [isOpen, setIsOpen] = useState<boolean>(true)
-// debugger
-  setTimeout(() => {
-    setIsOpen(false)
-  }, 2000)
+  let [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(false)
+    }, 1000)
+  }, [address])
+
+
   return (
-    <Popover
-      // open={true}
-      open={isOpen}
-      anchorReference="anchorPosition"
-      anchorPosition={{top: 0, left: 0}}
-      anchorOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
-    >
-      {address}
-    </Popover>
+    <>
+      {address
+        ? <Popover
+          open={isOpen}
+          anchorReference="anchorPosition"
+          anchorPosition={{top: 0, left: 0}}
+          anchorOrigin={{
+            vertical: 'center',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'center',
+            horizontal: 'center',
+          }}
+        >
+          {address}
+        </Popover>
+        : <></>
+      }
+    </>
   );
 }
 
