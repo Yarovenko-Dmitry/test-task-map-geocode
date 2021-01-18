@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/test-task-map-geocode/static/css/main.1e4f902e.chunk.css",
-    "main.js": "/test-task-map-geocode/static/js/main.a6c3c312.chunk.js",
-    "main.js.map": "/test-task-map-geocode/static/js/main.a6c3c312.chunk.js.map",
-    "runtime-main.js": "/test-task-map-geocode/static/js/runtime-main.ba67e9fa.js",
-    "runtime-main.js.map": "/test-task-map-geocode/static/js/runtime-main.ba67e9fa.js.map",
-    "static/js/2.bfd9f769.chunk.js": "/test-task-map-geocode/static/js/2.bfd9f769.chunk.js",
-    "static/js/2.bfd9f769.chunk.js.map": "/test-task-map-geocode/static/js/2.bfd9f769.chunk.js.map",
-    "static/js/3.32c25144.chunk.js": "/test-task-map-geocode/static/js/3.32c25144.chunk.js",
-    "static/js/3.32c25144.chunk.js.map": "/test-task-map-geocode/static/js/3.32c25144.chunk.js.map",
+    "main.css": "/test-task-map-geocode/static/css/main.73422d13.chunk.css",
+    "main.js": "/test-task-map-geocode/static/js/main.7ecb4d5e.chunk.js",
+    "main.js.map": "/test-task-map-geocode/static/js/main.7ecb4d5e.chunk.js.map",
+    "runtime-main.js": "/test-task-map-geocode/static/js/runtime-main.3a9ba893.js",
+    "runtime-main.js.map": "/test-task-map-geocode/static/js/runtime-main.3a9ba893.js.map",
+    "static/js/2.bdd59f6d.chunk.js": "/test-task-map-geocode/static/js/2.bdd59f6d.chunk.js",
+    "static/js/2.bdd59f6d.chunk.js.map": "/test-task-map-geocode/static/js/2.bdd59f6d.chunk.js.map",
+    "static/js/3.470beac1.chunk.js": "/test-task-map-geocode/static/js/3.470beac1.chunk.js",
+    "static/js/3.470beac1.chunk.js.map": "/test-task-map-geocode/static/js/3.470beac1.chunk.js.map",
     "index.html": "/test-task-map-geocode/index.html",
-    "static/css/main.1e4f902e.chunk.css.map": "/test-task-map-geocode/static/css/main.1e4f902e.chunk.css.map",
-    "static/js/2.bfd9f769.chunk.js.LICENSE.txt": "/test-task-map-geocode/static/js/2.bfd9f769.chunk.js.LICENSE.txt",
+    "static/css/main.73422d13.chunk.css.map": "/test-task-map-geocode/static/css/main.73422d13.chunk.css.map",
+    "static/js/2.bdd59f6d.chunk.js.LICENSE.txt": "/test-task-map-geocode/static/js/2.bdd59f6d.chunk.js.LICENSE.txt",
     "static/media/pointer.8c1cae95.svg": "/test-task-map-geocode/static/media/pointer.8c1cae95.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.ba67e9fa.js",
-    "static/js/2.bfd9f769.chunk.js",
-    "static/css/main.1e4f902e.chunk.css",
-    "static/js/main.a6c3c312.chunk.js"
+    "static/js/runtime-main.3a9ba893.js",
+    "static/js/2.bdd59f6d.chunk.js",
+    "static/css/main.73422d13.chunk.css",
+    "static/js/main.7ecb4d5e.chunk.js"
   ]
 }
