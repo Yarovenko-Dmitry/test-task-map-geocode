@@ -1,34 +1,30 @@
 import {InferActionsTypes} from './redux-store';
 import {Dispatch} from 'react';
-import {objectsGoogleAPI, objectsYandexAPI} from '../api/api';
-import {PreviousCoordinatesType} from '../Components/SendForm/SendForm';
+import {pointsGoogleAPI, pointsYandexAPI} from '../api/api';
+import {PreviousCoordinatesType} from '../App';
 
-export type EmployeeFormikDataType = {
-  first_name: string
-  last_name: string
-}
 
-export type DisplayObjectType = {
+export type PointType = {
   id: string,
   latitude: string,
   longitude: string,
   address?: string,
-  lastPointDistance?: number
+  lastPointDistance?: string
 }
 
 type MapReducerType = {
-  displayObjects: Array<DisplayObjectType>
+  pointList: Array<PointType>
 };
 
 let initialState: MapReducerType = {
-  displayObjects: []
+  pointList: []
 };
 
 export const mapReducer = (state = initialState, action: ActionType): MapReducerType => {
 
   switch (action.type) {
     case 'MAP-REDUCER/ADD_OBJECT': {
-      return {...state, displayObjects: [...state.displayObjects, action.newObject]}
+      return {...state, pointList: [...state.pointList, action.newObject]}
     }
     default:
       return state;
@@ -38,22 +34,30 @@ export const mapReducer = (state = initialState, action: ActionType): MapReducer
 type ActionType = InferActionsTypes<typeof actions>;
 
 export const actions = {
-  addObject: (newObject: DisplayObjectType) => ({type: 'MAP-REDUCER/ADD_OBJECT', newObject} as const),
+  addPoint: (newObject: PointType) => ({type: 'MAP-REDUCER/ADD_OBJECT', newObject} as const),
 }
 
 type DispatchType = Dispatch<ActionType>;
 
-export const geocodeNewObject = (newObject: DisplayObjectType, previousCoordinates: PreviousCoordinatesType) => {
+export const geocodeNewPoint = (newPoint: PointType, previousCoordinates: PreviousCoordinatesType) => {
   return async (dispatch: DispatchType) => {
-    const geocodeData = await objectsYandexAPI.geocodeNewObject(newObject.latitude, newObject.longitude);
-    newObject.address = geocodeData.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted;
 
-    const distanceData = await objectsGoogleAPI.getDistance(newObject.latitude, newObject.longitude, previousCoordinates);
+    const editPoint = {...newPoint}
 
-    const distance = distanceData?.data?.rows[0]?.elements[0]?.distance?.text;
-    if (distance) {
-      newObject.lastPointDistance = distance;
+    try {
+      const geocodeData = await pointsYandexAPI.geocodeNewObject(newPoint.latitude, newPoint.longitude);
+      editPoint.address = geocodeData.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted;
+
+        const distanceData = await pointsGoogleAPI.getDistance(newPoint.latitude, newPoint.longitude, previousCoordinates);
+        const distance = distanceData?.data?.rows[0]?.elements[0]?.distance?.text;
+
+        if (distance) {
+          editPoint.lastPointDistance = distance;
+        }
+
+      dispatch(actions.addPoint(editPoint));
+    } catch (err) {
+      console.warn('geocodeNewPoint err :', err)
     }
-    dispatch(actions.addObject(newObject));
   }
 }

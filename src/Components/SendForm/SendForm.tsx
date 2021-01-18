@@ -1,98 +1,73 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import s from './SendForm.module.css';
 import {useFormik} from 'formik';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {TextField} from '@material-ui/core';
-import {DisplayObjectType, geocodeNewObject} from '../../redux/map-reducer';
-import {AppStateType} from '../../redux/redux-store';
-import {PopoverMessage} from '../Popover/PopoverMessage';
+import {geocodeNewPoint, PointType} from '../../redux/map-reducer';
+import {SnackbarMessage} from './Snackbar/Snackbar';
+import {PreviousCoordinatesType} from '../../App';
 
 type SendFormPropsType = {
-  currentObject: DisplayObjectType
+  currentPoint: PointType
+  setIsLoadingProcess: (isLoadingProcess: boolean) => void
+  previousCoordinates: PreviousCoordinatesType
+  setPreviousCoordinates: (previousCoordinates: PreviousCoordinatesType) => void
 }
-export type PreviousCoordinatesType = [string, string]
 
+export const SendForm = React.memo(({currentPoint, setIsLoadingProcess, previousCoordinates, setPreviousCoordinates}: SendFormPropsType) => {
 
-export const SendForm = ({currentObject}: SendFormPropsType) => {
-  let address = currentObject.address
-  useEffect(() => {
-    address = currentObject.address
-  }, [currentObject.address])
-
-  let [previousCoordinates, setPreviousCoordinates] = useState<PreviousCoordinatesType>(['', ''])
-
-  // console.log('currentObject in SendForm:', currentObject);
   const dispatch = useDispatch();
 
-  // let address = currentObject.address
-  // if(currentDisplayObject?.id) {
-  //   address = currentDisplayObject.address
-  // }
+  useEffect(() => {
+    setIsLoadingProcess(false)
+  }, [currentPoint])
 
   const formik: any = useFormik({
     initialValues: {
-      latitude: currentObject.latitude,
-      longitude: currentObject.longitude,
-      address: currentObject.address
+      latitude: currentPoint.latitude,
+      longitude: currentPoint.longitude,
+      address: currentPoint.address
     },
-    onSubmit: values => {
-      // const {latitude, longitude} = values
-      dispatch(geocodeNewObject(currentObject, previousCoordinates));
-      setPreviousCoordinates([currentObject.latitude, currentObject.longitude])
+    onSubmit: () => {
+      dispatch(geocodeNewPoint(currentPoint, previousCoordinates));
+      setPreviousCoordinates([currentPoint.latitude, currentPoint.longitude])
+      setIsLoadingProcess(true)
+      setTimeout(()=>{
+        setIsLoadingProcess(false)
+      }, 3000)
     },
   });
-  // console.log('formik :', formik)
+
+  const textField = (id: string, name: string, label: string, value: string | undefined) => {
+    return (
+      <TextField
+        variant='outlined'
+        margin='normal'
+        fullWidth
+        id={id}
+        type='text'
+        name={name}
+        label={label}
+        onChange={formik.handleChange}
+        value={value}
+      />)
+  }
+
   return (
-    <><PopoverMessage
-      address={address}
-    />
+    <>
+      <SnackbarMessage message={currentPoint.address}/>
       <div className={s.sendForm}>
-        SendForm
         <form onSubmit={formik.handleSubmit}
               noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="latitude"
-            type="text"
-            name="latitude"
-            label="Latitude"
-            autoFocus
-            onChange={formik.handleChange}
-            value={currentObject.latitude}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="longitude"
-            name="longitude"
-            label="Longitude"
-            type="text"
-            onChange={formik.handleChange}
-            value={currentObject.longitude}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="address"
-            name="address"
-            // label="Address"
-            type="text"
-            onChange={formik.handleChange}
-            value={address}
-          />
+          {textField('latitude', 'latitude', 'Latitude', currentPoint.latitude)}
+          {textField('longitude', 'longitude', 'Latitude', currentPoint.longitude)}
+          {textField('address', 'address', '', currentPoint.address)}
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
           >
             Geocode
           </Button>
@@ -100,4 +75,4 @@ export const SendForm = ({currentObject}: SendFormPropsType) => {
       </div>
     </>
   )
-}
+});
